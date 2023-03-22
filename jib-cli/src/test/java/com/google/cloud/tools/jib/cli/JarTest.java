@@ -460,6 +460,14 @@ public class JarTest {
   }
 
   @Test
+  public void testParse_jvmFlags_withQuotedStrings() {
+    Jar jarCommand =
+        parseArgs(
+            new Jar(), "--target=test-image-ref", "--jvm-flags=-Dnested.jvm.opts=\"-Dprop=val -X:jvm-flag1\"", "my-app.jar");
+    assertThat(jarCommand.getJvmFlags()).isEqualTo(ImmutableList.of("-Dnested.jvm.opts=\"-Dprop=val -X:jvm-flag1\""));
+  }
+
+  @Test
   public void testParse_exposedPorts() {
     Jar jarCommand =
         parseArgs(
@@ -497,6 +505,18 @@ public class JarTest {
             new Jar(),
             "--target=test-image-ref",
             "--labels=label1=value2,label2=value2",
+            "my-app.jar");
+    assertThat(jarCommand.commonContainerConfigCliOptions.getLabels())
+        .isEqualTo(ImmutableMap.of("label1", "value2", "label2", "value2"));
+  }
+
+  @Test
+  public void testParse_labels_withQuotedStrings() {
+    Jar jarCommand =
+        parseArgs(
+            new Jar(),
+            "--target=test-image-ref",
+            "--labels=\"label1=value2\",\"label2=value2\"",
             "my-app.jar");
     assertThat(jarCommand.commonContainerConfigCliOptions.getLabels())
         .isEqualTo(ImmutableMap.of("label1", "value2", "label2", "value2"));
