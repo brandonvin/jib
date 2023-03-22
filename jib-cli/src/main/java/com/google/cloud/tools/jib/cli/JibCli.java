@@ -139,17 +139,20 @@ public class JibCli {
     }
   }
 
+  static CommandLine makeCommandLine(Object command) {
+    CommandLine cli = new CommandLine(command);
+    cli.setTrimQuotes(true);
+    cli.setParameterExceptionHandler(new ShortErrorMessageHandler());
+    return cli;
+  }
+
   /**
    * The magic starts here.
    *
    * @param args the command-line arguments
    */
   public static void main(String[] args) {
-    int exitCode =
-        new CommandLine(new JibCli())
-            .setTrimQuotes(true)
-            .setParameterExceptionHandler(new ShortErrorMessageHandler())
-            .execute(args);
+    int exitCode = makeCommandLine(new JibCli()).execute(args);
     System.exit(exitCode);
   }
 }
