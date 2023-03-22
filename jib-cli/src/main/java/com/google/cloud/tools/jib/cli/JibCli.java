@@ -147,6 +147,7 @@ public class JibCli {
   public static void main(String[] args) {
     int exitCode =
         new CommandLine(new JibCli())
+            .setTrimQuotes(true)
             .setParameterExceptionHandler(new ShortErrorMessageHandler())
             .execute(args);
     System.exit(exitCode);
